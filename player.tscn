@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://baskyjrqnnk8e"]
+
+[ext_resource type="Texture2D" uid="uid://cgntskffeqvuk" path="res://icon.svg" id="1_4bd8v"]
+[ext_resource type="Script" path="res://player.gd" id="1_h0awq"]
+[ext_resource type="PackedScene" uid="uid://bfbvuqy1ufr3i" path="res://shot.tscn" id="2_30g45"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1tulj"]
+radius = 61.131
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_h0awq")
+projectile_scene = ExtResource("2_30g45")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4bd8v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1tulj")
+
+[node name="LeftEye" type="Marker2D" parent="."]
+position = Vector2(-20, 0)
+
+[node name="RightEye" type="Marker2D" parent="."]
+position = Vector2(20, 0)

@@ -1,0 +1,119 @@
+[gd_scene load_steps=10 format=3 uid="uid://1qxpn4ww2qil"]
+
+[ext_resource type="Script" path="res://Scrolling.gd" id="1_2pwyp"]
+[ext_resource type="Texture2D" uid="uid://cgntskffeqvuk" path="res://icon.svg" id="2_n7il1"]
+[ext_resource type="Texture2D" uid="uid://brlkebefxu8rj" path="res://Assets/blue.png" id="3_jb68p"]
+[ext_resource type="Texture2D" uid="uid://38ehctpjereo" path="res://Assets/darkPurple.png" id="4_5j1cl"]
+[ext_resource type="PackedScene" uid="uid://baskyjrqnnk8e" path="res://player.tscn" id="5_eerve"]
+
+[sub_resource type="Animation" id="Animation_7blk3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ParallaxLayer/BG2:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -648)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ParallaxLayer/BG3:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -648)]
+}
+
+[sub_resource type="Animation" id="Animation_slbkx"]
+resource_name = "Transition"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ParallaxLayer/BG2:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 0.420448, 1),
+"update": 0,
+"values": [Vector2(0, -648), Vector2(0, -324), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mnmk8"]
+resource_name = "Transition2"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ParallaxLayer/BG3:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -648), Vector2(0, -324), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q4jba"]
+_data = {
+"RESET": SubResource("Animation_7blk3"),
+"Transition": SubResource("Animation_slbkx"),
+"Transition2": SubResource("Animation_mnmk8")
+}
+
+[node name="Game" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("1_2pwyp")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(0, 648)
+
+[node name="BG" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(576, 325)
+scale = Vector2(9, 5.07813)
+texture = ExtResource("2_n7il1")
+
+[node name="BG2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(582.5, 328)
+scale = Vector2(4.51172, 2.57031)
+texture = ExtResource("3_jb68p")
+offset = Vector2(0, -648)
+
+[node name="BG3" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(572, 329.5)
+scale = Vector2(4.46875, 2.57422)
+texture = ExtResource("4_5j1cl")
+offset = Vector2(0, -648)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ParallaxBackground"]
+libraries = {
+"": SubResource("AnimationLibrary_q4jba")
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 9.0
+one_shot = true
+autostart = true
+
+[node name="Player" parent="." instance=ExtResource("5_eerve")]
+position = Vector2(585, 451)
+
+[connection signal="timeout" from="Timer" to="ParallaxBackground" method="play_transition"]
+[connection signal="timeout" from="Timer2" to="ParallaxBackground" method="play_transition2"]
